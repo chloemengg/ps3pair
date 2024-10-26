@@ -21,12 +21,20 @@ include-before-body:
 ```{python}
 import pandas as pd
 import numpy as np
+import altair as alt
 
 np.random.seed(42)
 data = pd.DataFrame(np.random.rand(100), columns=['Random Numbers'])
 
 def preview_data(df):
-    print(df.head())
+    head_output = df.head()
+    histogram_output = alt.Chart(df).mark_bar().encode(
+      x = 'Random Numbers',
+      y = 'count()'
+    )
+    return [head_output, histogram_output]
 
-preview_data(data)
+result = preview_data(data)
+print("Head:\n:", result[0])
+result[1].show()
 ```
